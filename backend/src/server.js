@@ -5,23 +5,30 @@ import { connectDB } from "./lib/db.js";
 import cors from "cors";
 import { serve } from "inngest/express";
 import { inngest, functions } from "./lib/inngest.js";
+import { clerkMiddleware } from "@clerk/express";
+import chatRoutes from "./routes/chatRoutes.js";
 
 const app = express();
 
 //middlewares
 app.use(express.json());
+
 // credentials:true meaning?? => server allows a browser to include cookies on request
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 
+// this adds authentication to req object
+app.use(clerkMiddleware());
+
+//inngest endpoint
 app.use("/api/inngest", serve({ client: inngest, functions }));
+
+//get chat token api
+app.use("/api/chat", chatRoutes);
 
 const __dirname = path.resolve();
 
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({ msg: "success from api" });
-});
-app.get("/books", (req, res) => {
-  res.status(200).json({ msg: "this is book" });
 });
 
 //make our app ready for deployment
