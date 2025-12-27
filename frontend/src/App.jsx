@@ -1,5 +1,3 @@
-import { useState } from "react";
-import "./App.css";
 import {
   SignedIn,
   SignedOut,
@@ -8,23 +6,26 @@ import {
   UserButton,
   UserProfile,
 } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
+import { Navigate, Routes, Route } from "react-router";
+import HomePage from "./pages/HomePage";
+import ProblemsPage from "./pages/ProblemsPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { isSignedIn } = useUser();
 
   return (
     <>
-      <h1>welcome to my app</h1>
-      <SignedOut>
-        <SignInButton mode="modal">
-          <button>Login</button>
-        </SignInButton>
-      </SignedOut>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/problems"
+          element={isSignedIn ? <ProblemsPage /> : <Navigate to={"/"} />}
+        />
+      </Routes>
 
-      <SignedIn>
-        <SignOutButton />
-      </SignedIn>
-      <UserButton />
+      <Toaster toastOptions={{ duration: 3000 }} />
     </>
   );
 }
