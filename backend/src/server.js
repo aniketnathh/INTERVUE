@@ -15,7 +15,22 @@ const app = express();
 app.use(express.json());
 
 // credentials:true meaning?? => server allows a browser to include cookies on request
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://intervue-orpin.vercel.app",
+  "https://intervue-atkjs6h5y-anikets-projects-e791da45.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) callback(null, true);
+      else callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
 
 // this adds authentication to req object
 app.use(clerkMiddleware());
@@ -33,14 +48,7 @@ app.get("/health", (req, res) => {
   res.status(200).json({ msg: "success from api" });
 });
 
-//make our app ready for deployment
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("/{*any}", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
-}
 
 const startServer = async () => {
   try {
