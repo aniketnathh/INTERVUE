@@ -44,8 +44,9 @@ app.use("/api/sessions", sessionRoutes);
 
 const __dirname = path.resolve();
 
-app.get("/health", (req, res) => {
-  res.status(200).json({ msg: "success from api" });
+
+app.get("/", (req, res) => {
+  res.status(200).json({ msg: "Backend is running" });
 });
 
 
