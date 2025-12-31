@@ -12,12 +12,7 @@ import sessionRoutes from "./routes/sessionRoute.js";
 
 const app = express();
 
-<<<<<<< HEAD
 // Middleware
-=======
-
-// middleware
->>>>>>> 7dee9605437d88b1c16e1a5b1cdb9a554081a823
 app.use(express.json());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware());
@@ -32,7 +27,6 @@ app.get("/health", (req, res) => {
   res.status(200).json({ msg: "API is up and running" });
 });
 
-<<<<<<< HEAD
 /**
  * Local dev server
  * Only start server locally
@@ -50,10 +44,6 @@ if (process.env.NODE_ENV !== "production") {
   };
   startServer();
 }
-=======
-
-
->>>>>>> 7dee9605437d88b1c16e1a5b1cdb9a554081a823
 
 /**
  * Vercel serverless handler
