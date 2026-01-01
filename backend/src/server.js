@@ -31,7 +31,7 @@ app.get("/health", (req, res) => {
  * Local dev server
  * Only start server locally
  */
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV == "production") {
   const startServer = async () => {
     try {
       await connectDB();
